@@ -1,32 +1,24 @@
-import './App.css'
-import {gql, useQuery} from "@apollo/client";
-
-const GET_LOCATIONS = gql`
-  query GetLocations {
-    locations {
-      id
-      name
-      description
-      photo
-    }
-  }
-`;
+import {HeaderComponent} from "./header/header.component.tsx";
+import {Suspense} from "react";
+import {LoaderComponent} from "./loader/loader.component.tsx";
+import {useCountriesStore} from "./state/state.ts";
+import {CountryComponent} from "./country/country.component.tsx";
+import classes from './App.module.scss'
 
 function App() {
-    const { loading, error, data } = useQuery(GET_LOCATIONS);
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error : {error.message}</p>;
+    const {countries} = useCountriesStore();
 
-    return data.locations.map(({ id, name, description, photo }) => (
-        <div key={id}>
-            <h3>{name}</h3>
-            <img width="400" height="250" alt="location-reference" src={`${photo}`} />
-            <br />
-            <b>About this location:</b>
-            <p>{description}</p>
-            <br />
-        </div>
-    ));
+    return <>
+        <Suspense fallback={<LoaderComponent/>}>
+            <HeaderComponent/>
+            <div className={classes.container}>
+                {countries.map((country) => <Suspense fallback={<LoaderComponent/>}>
+                    <CountryComponent key={country.id} id={country.id}/>
+                </Suspense>)}
+            </div>
+            {!countries.length && <div className={classes.empty}>No countries added</div>}
+        </Suspense>
+    </>
 }
 
 export default App
