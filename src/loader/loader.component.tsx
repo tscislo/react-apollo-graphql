@@ -1,6 +1,7 @@
 export const LoaderComponent = () => {
     return (
-        <div className="loader">
+        <div
+            data-testid="loader">
             Loading...
         </div>
     )
