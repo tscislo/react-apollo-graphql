@@ -13,20 +13,27 @@ export const HeaderComponent = () => {
     const {data} = useSuspenseQuery<CountriesGraphQLResponse>(CountriesQuery);
     return (
         <header>
+            <div>All countries: <span data-testid="all-countries-count">{store.countries.length}</span></div>
             <select ref={selectRef}>
                 {data?.countries.map((country) => <option
                     data-testid={country.code}
                     key={country.code}>{country.code}</option>)}
             </select>
-            <button onClick={() => store.addTile({
+            <button
+                data-testid="add-country-button"
+                onClick={() => store.addTile({
                 id: Math.round(Math.random() * 100000).toString(),
                 country: selectRef.current?.value || ''
             })}>Add country
             </button>
-            <button onClick={() => (store.countries.length) ? store.removeTile(store.countries[0].id) : ''}>Remove
-                first
+            <button
+                data-testid="remove-first-country-button"
+                onClick={() => (store.countries.length) ? store.removeTile(store.countries[0].id) : ''}>
+                Remove first
             </button>
-            <button onClick={() => store.removeTiles()}>Remove all</button>
+            <button
+                data-testid="remove-all-countries-button"
+                onClick={() => store.removeTiles()}>Remove all</button>
         </header>
     )
 }
