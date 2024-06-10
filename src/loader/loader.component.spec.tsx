@@ -4,9 +4,9 @@ import {LoaderComponent} from "./loader.component.tsx";
 
 describe('LoaderComponent', () => {
     it('should create', async () => {
-        // Arrange
+        // Act
         render(<LoaderComponent />)
         // Assert
-        expect(screen.getByTestId('loader')).toBeDefined();
+        expect(await screen.findByTestId('loader')).toBeDefined();
     });
 });

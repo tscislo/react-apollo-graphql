@@ -34,9 +34,11 @@ describe('HeaderComponent', () => {
                 </Suspense>
             </MockedProvider>
         )
-        // Act
         const addCountryButton = await screen.findByTestId('add-country-button');
+
+        // Act
         act(() => addCountryButton.click());
+
         // Assert
         expect((await screen.findByTestId('all-countries-count')).innerText).toEqual('1');
     });
